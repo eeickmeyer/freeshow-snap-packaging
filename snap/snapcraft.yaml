@@ -37,9 +37,11 @@ parts:
     stage-packages:
       - libasound2t64
     override-pull: |
-      git clone https://github.com/ChurchApps/FreeShow.git
+      git clone https://github.com/ChurchApps/FreeShow.git .
       VERSION=$(craftctl get version | cut -d- -f1)
       git checkout "v${VERSION}"
+      rm -rf snap
+      rm makesnap
     override-build: |
       npm install
       npm run build
@@ -48,6 +50,9 @@ parts:
     override-prime: |
       craftctl default
       cp $SNAPCRAFT_PROJECT_DIR/snap/local/*.sh $SNAPCRAFT_PRIME
+    build-packages:
+      - npm
+
 
 apps:
   freeshow:
